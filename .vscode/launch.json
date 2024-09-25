@@ -4,6 +4,18 @@
     "configurations": [
 
         {
+            "name": "one_to_ten Project",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-sandbox-one_to_ten",
+            "program": "${workspaceFolder}/sandbox/one_to_ten/bin/Debug/net8.0/one_to_ten.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/sandbox/one_to_ten",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "stopAtEntry": false
+        },
+        {
             "name": "Sandbox Project",
             "type": "coreclr",
             "request": "launch",

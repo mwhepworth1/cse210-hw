@@ -17,6 +17,19 @@
         },
 
         {
+            "label": "build-sandbox-one_to_ten",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/sandbox/one_to_ten/one_to_ten.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+
+        {
             "label": "build-csharp-prep-Prep1",
             "command": "dotnet",
             "type": "process",
