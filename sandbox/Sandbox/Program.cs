@@ -3,18 +3,29 @@ using System.Security.Cryptography.X509Certificates;
 
 class Program
 {
+    // This is the main method. It's like the starting point of our program.
+    // When we run the program, it will start executing from here.
     static void Main(string[] args)
     {
-        List<int> numbers = new List<int> {1, 2, 3, 4, 5};
-        
-        List<double> x;
-        x = [24, 25, 26];
+        // We are creating a new costume and calling it "nurse".
+        // Think of it like making a new dress-up outfit.
+        Costume nurse = new();
+        nurse.headWear = "Face mask"; 
+        nurse.gloves = "Nitrile";
+        nurse.shoes = "Orothopedic";
+        nurse.upperGarment = "Scrubs";
+        nurse.lowerGarment = "Scrubs";
+        nurse.accessory = "Stethoscope";
 
-        Console.WriteLine("Hello Sandbox World!");
+        Costume detective = new();
+        detective.headWear = "Fedora";
+        detective.gloves = "Leather";
+        detective.shoes = "Oxford";
+        detective.upperGarment = "Trench coat";
+        detective.lowerGarment = "Slacks";
+        detective.accessory = "Magnifying glass";
 
-        foreach (double number in x)
-        {
-            Console.WriteLine(number);
-        }
+        nurse.ShowWardrobe();
+        detective.ShowWardrobe();
     }
 }
