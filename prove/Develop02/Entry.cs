@@ -12,13 +12,4 @@ public class Entry
         Response = Console.ReadLine();
         Date = DateTime.Now;
     }
-
-    // public string CreateEntry(Prompt, Response, Date)
-    // {
-    //     string entry = "";
-    //     entry = ($"Date: {Date} -- Prompt: {Prompt}\n{Response}");
-    //     return  entry;
-
-    // }
-
 }
