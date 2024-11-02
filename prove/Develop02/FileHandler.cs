@@ -12,8 +12,8 @@ class FileHandler
             {
                 foreach (Entry entry in entries)
                 {
-                    writer.WriteLine($"{entry.Date} | {entry.Prompt} >");
-                    writer.WriteLine(entry.Response);
+                    writer.WriteLine($"{entry._Date} | {entry._Prompt} >");
+                    writer.WriteLine(entry._Response);
                 }
             }
             return true; // Return true if the operation is successful
@@ -55,11 +55,11 @@ class FileHandler
                                     
                                     Entry entry = new Entry
                                     {
-                                        Date = date,
-                                        Prompt = prompt,
-                                        Response = response
+                                        _Date = date,
+                                        _Prompt = prompt,
+                                        _Response = response
                                     };
-                                    Console.WriteLine($"[DEBUG] Entry loaded: {entry.Date} | {entry.Prompt} > {entry.Response}");
+                                    Console.WriteLine($"[DEBUG] Entry loaded: {entry._Date} | {entry._Prompt} > {entry._Response}");
                                     entries.Add(entry);
                                 }
                                 else

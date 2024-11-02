@@ -2,14 +2,14 @@ using System;
 
 public class Entry
 {
-    public string Prompt;
-    public string Response;
-    public DateTime Date;
+    public string _Prompt;
+    public string _Response;
+    public DateTime _Date;
     public void CreateEntry(string prompt)
     {
-        Prompt = prompt;
+        _Prompt = prompt;
         Console.WriteLine(prompt);
-        Response = Console.ReadLine();
-        Date = DateTime.Now;
+        _Response = Console.ReadLine();
+        _Date = DateTime.Now;
     }
 }

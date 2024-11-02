@@ -2,7 +2,7 @@ using System;
 
 class Menu
 {
-    private Journal journal = new();
+    private Journal _journal = new();
     public void DisplayOptions()
     {
         Console.WriteLine("\n\nSelect an option:");
@@ -27,19 +27,19 @@ class Menu
             {
                 case "1":
                     AddSpace();
-                    journal.AddEntry();
+                    _journal.AddEntry();
                     break;
                 case "2":
                     AddSpace();
-                    journal.DisplayEntries();
+                    _journal.DisplayEntries();
                     break;
                 case "3":
                     AddSpace();
-                    journal.SaveToFile();
+                    _journal.SaveToFile();
                     break;
                 case "4":
                     AddSpace();
-                    journal.LoadFromFile();
+                    _journal.LoadFromFile();
                     break;
                 case "5":
                     AddSpace();

@@ -2,7 +2,7 @@ using System;
 
 class PromptManager
 {
-    List<string> journalPrompts = new List<string>
+    List<string> _journalPrompts = new List<string>
     {
         "What are three things you are grateful for today?",
         "Describe a recent challenge you faced and how you handled it.",
@@ -34,10 +34,10 @@ class PromptManager
         Random random = new Random();
         
         // Pick a random index from the list of prompts
-        int index = random.Next(journalPrompts.Count);
+        int index = random.Next(_journalPrompts.Count);
         
         // If we've used all the prompts, clear the list of used prompts
-        if (usedPromptIndex.Count == journalPrompts.Count)
+        if (usedPromptIndex.Count == _journalPrompts.Count)
         {
             usedPromptIndex.Clear(); // Set the list of used prompts back to an empty list
         }
@@ -45,14 +45,14 @@ class PromptManager
         // Keep picking a new random index until we find one that hasn't been used
         while (usedPromptIndex.Contains(index))
         {
-            index = random.Next(journalPrompts.Count); // Pick a new random index
+            index = random.Next(_journalPrompts.Count); // Pick a new random index
         }
     
         // Add the new index to the list of used prompts
         usedPromptIndex.Add(index);
         
         // Return the prompt at the random index
-        return journalPrompts[index];
+        return _journalPrompts[index];
     }
 
 }
