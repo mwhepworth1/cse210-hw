@@ -42,7 +42,6 @@ class Reflection : Activity
         // Allow the user to type and submit responses until the time is up
         while (DateTime.Now < end)
         {
-            Console.WriteLine($"Date: {DateTime.Now} | Question Index: {index}");
             Console.WriteLine(_questions[index] + "\n");
             index = GetRandomIndex();
             string input = Console.ReadLine();

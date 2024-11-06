@@ -7,7 +7,6 @@ class Breathing : Activity
         _description = "\nBreathing is a simple and effective way to calm your mind and relax your body. \n" +
             "Take a deep breath in through your nose, hold it for a few seconds, and then exhale through your mouth. \n" +
             "\nHow long would you like to practice this activity (in seconds)?";
-
     }
     public void Start()
     {
@@ -25,13 +24,15 @@ class Breathing : Activity
                 Breathe("in", 5);
                 Breathe("out", 5);
                 dur -= 10;
-            } else if (dur < 10)
+            } 
+            else if (dur < 10)
             {
                 Breathe("in", 5);
-                int remaining = 10 - dur;
+                int remaining = 10 - dur + 5;
                 Breathe("out", remaining);
                 dur -= 5 + remaining;
-            } else if (dur <= 5) {
+            } 
+            else if (dur <= 5) {
                 dur = 0;
             }
         }
