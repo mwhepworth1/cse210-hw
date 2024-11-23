@@ -1,0 +1,4 @@
+totalPoints: 69420
+hhh;;hh;;True;;100;;Checklist;;1000;;2;;2
+eternal;;gg;;False;;111;;Eternal
+simple;;beans;;True;;9999999;;Simple
