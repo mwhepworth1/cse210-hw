@@ -1,12 +1,14 @@
-using Microsoft.Toolkit.Uwp.Notifications; // Add this using directive
+using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 
-class Toast
+public class Toast
 {
-    public string _title;
-    public int _duration; // in seconds
-    public string _message;
-    public string _canvasCourseCode;
-    public string _courseName;
+    private string _title;
+    private int _duration;
+    private string _message;
+    private string _canvasCourseCode; 
+    private string _courseName;
 
     public Toast(string title, int duration, string message, string canvasCourseCode, string courseName)
     {
@@ -20,17 +22,22 @@ class Toast
     public void Send()
     {
         // Create the toast content
-        var content = new ToastContentBuilder()
-            .AddText(_title)
-            .AddText(_message)
-            .AddText($"Course: {_courseName} ({_canvasCourseCode})")
-            .SetToastDuration(_duration == 0 ? ToastDuration.Short : ToastDuration.Long)
-            .GetToastContent();
+        string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        string logoPath = Path.Combine(appDirectory, "img", "canvas.png");
 
-        // Create the toast notification
-        var toast = new ToastNotification(content.GetXml());
+        // Construct the toast content
+        ToastContentBuilder toast = new();
 
-        // Show the toast notification
-        ToastNotificationManagerCompat.CreateToastNotifier().Show(toast);
+        toast.SetToastScenario(ToastScenario.Reminder);
+        toast.SetToastDuration(ToastDuration.Long);
+        toast.AddArgument("action", "viewAssignment");
+        toast.AddArgument("courseName", _courseName);
+        toast.AddText(_title);
+        toast.AddText(_message);
+        toast.AddCustomTimeStamp(DateTime.Now);
+        toast.AddAppLogoOverride(new Uri(logoPath));
+
+        // Show the toast
+        toast.Show();
     }
 }

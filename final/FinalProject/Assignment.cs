@@ -38,4 +38,12 @@ class Assignment
     {
         return (DateTime.Now < _availableFrom) && (DateTime.Now > _availableUntil);
     }
+    public DateTime GetDueDate()
+    {
+        return _dueDate.AddHours(-24);
+    }
+    public string GetTitle()
+    {
+        return _name;
+    }
 }

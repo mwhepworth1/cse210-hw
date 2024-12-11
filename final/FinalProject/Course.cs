@@ -7,6 +7,7 @@ class Course
     private string _canvasCode;
     private bool _hasEnded;
     private bool _isOnline;
+    private List<Assignment> _assignments = new();
 
     public Course(string name, string instructor, string term, string courseCode, string canvasCode, bool hasEnded, bool isOnline)
     {
@@ -66,5 +67,17 @@ class Course
     public void MarkAsEnded()
     {
         _hasEnded = true;
+    }
+    public void AddAssignment(Assignment assignment)
+    {
+        _assignments.Add(assignment);
+    }
+    public List<Assignment> GetAssignments()
+    {
+        return _assignments;
+    }
+    public void DeleteAssignments()
+    {
+        _assignments.Clear();
     }
 }

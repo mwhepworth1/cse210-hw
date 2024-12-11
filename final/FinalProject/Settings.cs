@@ -1,4 +1,3 @@
-
 using System.IO;
 using Newtonsoft.Json;
 class Settings
@@ -14,6 +13,8 @@ class Settings
         _notificationsEnabled = notificationsEnabled;
         _showInCalendar = showInCalendar;
         _refreshInterval = refreshInterval;
+        Load();
+        Save();
     }
     public void Update(string item, string value)
     {
@@ -50,40 +51,125 @@ class Settings
     }
     public void Save()
     {
-        string filePath = "settings.json";
-        List<Settings> settingsList;
-    
+        string filePath = "settings.txt";
+        List<string> settingsList = new List<string>();
+
         // Check if the settings file exists
         if (File.Exists(filePath))
         {
-            string json = File.ReadAllText(filePath);
-            settingsList = JsonConvert.DeserializeObject<List<Settings>>(json) ?? new List<Settings>(); 
+            settingsList = File.ReadAllLines(filePath).ToList();
         }
-        else
-        {
-            // Create a new list if the file does not exist
-            settingsList = new List<Settings>();
-        }
-    
+
         // Find the existing setting for the current course code
-        var existingSetting = settingsList.Find(s => s._canvasCourseCode == this._canvasCourseCode);
-        if (existingSetting != null)
+        int existingIndex = settingsList.FindIndex(s => s.StartsWith(_canvasCourseCode + ","));
+        string newSetting = $"{_canvasCourseCode},{_notificationsEnabled},{_showInCalendar},{_refreshInterval}";
+
+        if (existingIndex != -1)
         {
             // Update the existing setting with the current settings
-            existingSetting._notificationsEnabled = this._notificationsEnabled;
-            existingSetting._showInCalendar = this._showInCalendar;
-            existingSetting._refreshInterval = this._refreshInterval;
+            settingsList[existingIndex] = newSetting;
         }
         else
         {
             // Add the current settings to the list if not found
-            settingsList.Add(this);
+            settingsList.Add(newSetting);
+        }
+
+        // Write the updated settings list to the file
+        File.WriteAllLines(filePath, settingsList);
+    }
+    public void Load()
+    {
+        string filePath = "settings.txt";
+
+        // Check if the settings file exists
+        if (File.Exists(filePath))
+        {
+            List<string> settingsList = File.ReadAllLines(filePath).ToList();
+
+            // Find the setting for the current course code
+            string setting = settingsList.Find(s => s.StartsWith(_canvasCourseCode + ","));
+
+            if (setting != null)
+            {
+                // Parse the setting and update the current settings
+                string[] parts = setting.Split(',');
+                _notificationsEnabled = bool.Parse(parts[1]);
+                _showInCalendar = bool.Parse(parts[2]);
+                _refreshInterval = int.Parse(parts[3]);
+            }
+            // else do nothing, item will be saved.
+        }
+        // else do nothing, file will be generated on save.
+    }
+    public async Task<List<Assignment>> UpdateAssignments(Course course)
+    {
+        string uri = $"https://byui.instructure.com/api/v1/courses/{_canvasCourseCode}/assignments";
+        ApiResponse response = await Utilities.CanvasAPI("get", uri);
+    
+        List<Assignment> updatedAssignments = new List<Assignment>();
+    
+        if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            dynamic assignmentsData = Newtonsoft.Json.JsonConvert.DeserializeObject(response.Body);
+            foreach (var assignment in assignmentsData)
+            {
+                if (assignment.quiz_id != null)
+                {
+                    // treat this as a quiz, not an assignment
+                }
+                else
+                {
+                    DateTime unlockAt = assignment.unlock_at != null ? DateTime.Parse((string)assignment.unlock_at) : DateTime.Now;
+                    DateTime lockAt = assignment.lock_at != null ? DateTime.Parse((string)assignment.lock_at) : new DateTime(2099, 12, 31);
+                    DateTime dueDate = DateTime.Parse((string)assignment.due_at);
+                    string name = assignment.name;
+                    int points = assignment.points_possible;
+                    int allowedAttempts = assignment.allowed_attempts;
+    
+                    Assignment newAssignment = new Assignment(name, points, dueDate, allowedAttempts, unlockAt, lockAt);
+                    updatedAssignments.Add(newAssignment);
+                }
+            }
+    
+            // Fetch current assignments
+            List<Assignment> currentAssignments = course.GetAssignments();
+    
+            // Detect changes
+            List<Assignment> changedAssignments = DetectChanges(currentAssignments, updatedAssignments);
+    
+            // Send notifications for changed assignments
+            foreach (var assignment in changedAssignments)
+            {
+                if (!_notificationsEnabled) continue;
+                Toast notification = new Toast("Assignment Updated", 5000, $"Assignment '{assignment.GetTitle()}' has been updated.", course.GetCanvasCode(), course.GetName());
+                notification.Send();
+            }
+    
+            // Update the course assignments
+            course.DeleteAssignments();
+            foreach (var assignment in updatedAssignments)
+            {
+                course.AddAssignment(assignment);
+            }
         }
     
-        // Write the updated settings list to the file
-        using (StreamWriter outputFile = new StreamWriter(filePath))
+        return updatedAssignments;
+    }
+    
+    private List<Assignment> DetectChanges(List<Assignment> currentAssignments, List<Assignment> updatedAssignments)
+    {
+        List<Assignment> changedAssignments = new List<Assignment>();
+    
+        foreach (var updatedAssignment in updatedAssignments)
         {
-            outputFile.WriteLine(JsonConvert.SerializeObject(settingsList, Formatting.Indented));
+            var currentAssignment = currentAssignments.FirstOrDefault(a => a.GetTitle() == updatedAssignment.GetTitle());
+            if (currentAssignment == null || !currentAssignment.Equals(updatedAssignment))
+            {
+                changedAssignments.Add(updatedAssignment);
+            }
         }
+    
+        return changedAssignments;
     }
 }
