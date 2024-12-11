@@ -37,19 +37,18 @@ public class Toast
         toast.AddText(_title);
         toast.AddText(_message);
         
-        if (_courseName == "N/A")
+        if (_courseName != "N/A")
         {
-            toast.AddText(_author);
-        }
-        else if (_author == "Instructor Name")
-        {
+            if (_author == "Instructor Name")
+            {
             toast.AddText(_courseName);
-        }
-        else
-        {
+            }
+            else
+            {
             toast.AddText($"{_author} - {_courseName}");
+            }
         }
-        
+
         toast.AddCustomTimeStamp(DateTime.Now);
         toast.AddAppLogoOverride(new Uri(logoPath));
 

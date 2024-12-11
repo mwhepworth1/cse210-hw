@@ -1,11 +1,11 @@
-303140,True,True,30
+303140,True,True,20
 302082,True,True,60
 48558,True,True,60
 284154,True,True,60
 228342,True,True,60
 299136,True,True,60
 299118,False,True,400
-302092,True,True,1
+302092,True,True,60
 317352,True,True,60
 284644,True,True,60
 313098,True,True,60

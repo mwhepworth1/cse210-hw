@@ -9,7 +9,6 @@ using Windows.Media.Protection.PlayReady;
     2. Add quiz update notifications in test menu
 */
 
-
 /*
 
 Instructions for installing and running this app:
@@ -83,7 +82,8 @@ class Program
                 // Check to see if there is an API key in the file
                 if (!File.Exists("apikey.json"))
                 {
-                    Console.WriteLine("API key not found. Please link your account to continue.");
+                    Console.WriteLine("API key not found. Please link your account.");
+                    initalized = false;
                 }
                 else
                 {
@@ -95,15 +95,12 @@ class Program
                     if (response == null || response.StatusCode != System.Net.HttpStatusCode.OK)
                     {
                         // Console.WriteLine("Failed to connect to Canvas API. Please check your API key.");
-                        Toast notification = new Toast("Canvas Connect", 5000, "Failed to connect to Canvas API. Please check your API key in apikey.json", "SYS", "SYSTEM MESSAGE", "SYSTEM");
+                        Toast notification = new Toast("Canvas Connect", 5000, "Failed to connect to Canvas API. Please check your API key in apikey.json", "SYS", "SYSTEM MESSAGE", "N/A");
                         notification.Send();
                     }
                     else
                     {
-                        // Console.WriteLine("============================================");
-                        // Console.WriteLine("     Successfully Connected to Canvas.      ");
-                        // Console.WriteLine("============================================");
-                        Toast notification = new Toast("Canvas Connect", 5000, "Successfully connected to Canvas API.", "SYS", "SYSTEM MESSAGE", "SYSTEM");
+                        Toast notification = new Toast("Canvas Connect", 5000, "Successfully connected to Canvas API.", "SYS", "SYSTEM MESSAGE", "N/A");
                         notification.Send();
                     }
                     await FetchAPIData(); // Fetch Courses and Assignment Data
@@ -133,7 +130,14 @@ class Program
                     TimerUtility.SetTimeout<Task<bool>>(async task => await setting.UpdateAssignments(course), null, setting.GetRefreshInterval() * 60000);
                 }
             }
-
+            if (!File.Exists("apikey.json")) 
+            {
+                Console.WriteLine("\n============================================");
+                Console.WriteLine("API key not found. Please link your account.");
+                Console.WriteLine("============================================\n");
+                initalized = false;
+                Thread.Sleep(2000);
+            }
             Console.WriteLine("Please choose one of the following options:");
             Console.WriteLine("    1. Link Account");
             Console.WriteLine("    2. View Calendar");
@@ -253,7 +257,6 @@ class Program
                 courses.Add(new Course($"{course.name}", instructor, $"{course.term.name}", $"{course.course_code}", $"{course.id}", hasEnded, isOnline));
             }
             Utilities.HideSpinner();
-            Console.WriteLine("\n");
             
             foreach (Course course in courses)
             {
@@ -299,7 +302,6 @@ class Program
                             course.AddAssignment(newAssignment);
                         }
                     }
-                    Utilities.HideSpinner();
                 }
                 else
                 {
@@ -500,7 +502,6 @@ class Program
         Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
         toast.Send();
     }
-
     private static void QuizChangeNotificationTest()
     {
         // Simulate a quiz change notification
@@ -512,7 +513,6 @@ class Program
         Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
         toast.Send();
     }
-
     private static void AssignmentCreatedNotificationTest()
     {
         // Simulate an assignment created notification
@@ -524,7 +524,6 @@ class Program
         Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
         toast.Send();
     }
-
     private static void QuizCreatedNotificationTest()
     {
         // Simulate a quiz created notification
@@ -536,7 +535,6 @@ class Program
         Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
         toast.Send();
     }
-
     private static void AssignmentDueNotificationTest()
     {
         // Simulate an assignment due notification
@@ -548,7 +546,6 @@ class Program
         Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
         toast.Send();
     }
-
     private static void QuizDueNotificationTest()
     {
         // Simulate a quiz due notification
