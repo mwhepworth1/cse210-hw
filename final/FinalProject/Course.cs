@@ -8,6 +8,7 @@ class Course
     private bool _hasEnded;
     private bool _isOnline;
     private List<Assignment> _assignments = new();
+    private List<Quiz> _quizzes = new();
 
     public Course(string name, string instructor, string term, string courseCode, string canvasCode, bool hasEnded, bool isOnline)
     {
@@ -79,5 +80,17 @@ class Course
     public void DeleteAssignments()
     {
         _assignments.Clear();
+    }
+    public void AddQuiz(Quiz quiz)
+    {
+        _quizzes.Add(quiz);
+    }
+    public List<Quiz> GetQuizzes()
+    {
+        return _quizzes;
+    }
+    public void DeleteQuizzes()
+    {
+        _quizzes.Clear();
     }
 }

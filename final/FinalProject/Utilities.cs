@@ -79,6 +79,36 @@ public static class Utilities
         dynamic json = JsonConvert.DeserializeObject(File.ReadAllText(filePath));
         return json.key;
     }
+    private static bool spin = false;
+
+    // Threaded spinner to show progress by GitHub Copilot using GPT-4o.
+    // Spinner method created by myself.
+    public static void ShowSpinner(string message)
+    {
+        Console.Write(message);
+        spin = true;
+        Thread spinnerThread = new Thread(() =>
+        {
+            string[] spinner = { "|", "/", "―", "\\" };
+            int interval = 50;
+            int index = 0;
+            while (spin)
+            {
+                Console.Write(spinner[index]);
+                Thread.Sleep(interval);
+                Console.Write("\b \b");
+                index = (index + 1) % spinner.Length;
+            }
+        });
+        spinnerThread.Start();
+    }
+    public static void HideSpinner()
+    {
+        spin = false;
+        Console.Write("\b \b");
+        Console.Write("\n");
+        Thread.Sleep(500); // Helps prevent exceeding API limits.
+    }
 }
 public class ApiResponse
 {

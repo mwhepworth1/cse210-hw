@@ -1,12 +1,14 @@
 class Calendar
 {
-    public DateTime _date;
-    public List<Assignment> _assignments;
+    private DateTime _date;
+    private List<Assignment> _assignments;
+    private List<Quiz> _quizzes;
 
-    public Calendar(DateTime date, List<Assignment> assignments)
+    public Calendar(DateTime date, List<Assignment> assignments, List<Quiz> quizzes)
     {
         _date = date;
         _assignments = assignments;
+        _quizzes = quizzes;
     }
 
     public void Display()
@@ -47,9 +49,36 @@ class Calendar
                 DateTime dueDate = assignment.GetDueDate();
                 string item = assignment.GetTitle();
 
+                // Apply strikethrough text if it's completed
+                if (assignment.IsCompleted())
+                {
+                    item = $"[C] {item}";
+                }
+
                 for (int i = 0; i < nextSixDays.Length; i++)
                 {
                     if (dueDate.Date == nextSixDays[i].Date)
+                    {
+                        itemsForDays[i].Add(item);
+                    }
+                }
+            }
+
+            // Populate items for each day based on quiz dates
+            foreach (Quiz quiz in _quizzes)
+            {
+                DateTime quizDate = quiz.GetDueDate();
+                string item = "[QUIZ] " + quiz.GetTitle();
+
+                // Apply strikethrough text if it's completed
+                if (quiz.IsCompleted())
+                {
+                    item = $"[C] {item}";
+                }
+
+                for (int i = 0; i < nextSixDays.Length; i++)
+                {
+                    if (quizDate.Date == nextSixDays[i].Date)
                     {
                         itemsForDays[i].Add(item);
                     }

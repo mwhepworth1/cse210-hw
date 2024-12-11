@@ -6,13 +6,14 @@ class Assignment
     protected int _allowedAttempts = -1;
     protected DateTime _availableFrom;
     protected DateTime _availableUntil;
+    protected bool _hasBeenSubmitted = false;
 
-    public Assignment(string name, int points, DateTime dueDate, int allowedAttempts, DateTime availableFrom, DateTime availableUntil)
+    public Assignment(string name, int points, DateTime dueDate, int allowedAttempts, DateTime availableFrom, DateTime availableUntil, bool completed = false)
     {
-        CreateItem(name, points, dueDate, allowedAttempts, availableFrom, availableUntil);
+        CreateItem(name, points, dueDate, allowedAttempts, availableFrom, availableUntil, completed);
     }
 
-    protected void CreateItem(string name, int points, DateTime dueDate, int allowedAttempts, DateTime availableFrom, DateTime availableUntil)
+    protected void CreateItem(string name, int points, DateTime dueDate, int allowedAttempts, DateTime availableFrom, DateTime availableUntil, bool completed)
     {
         _name = name;
         _points = points;
@@ -20,6 +21,7 @@ class Assignment
         _allowedAttempts = allowedAttempts;
         _availableFrom = availableFrom;
         _availableUntil = availableUntil;
+        _hasBeenSubmitted = completed;
     }
     public virtual List<string> GetDetails()
     {
@@ -45,5 +47,9 @@ class Assignment
     public string GetTitle()
     {
         return _name;
+    }
+    public bool IsCompleted()
+    {
+        return _hasBeenSubmitted;
     }
 }
