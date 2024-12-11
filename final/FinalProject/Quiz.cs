@@ -17,4 +17,44 @@ class Quiz : Assignment
         _isProctored = isProctored;
         _isRemotelyProctored = isRemotelyProctored;
     }
+    /*
+        Polymorphism is used here to override the GetDetails method in the base class.
+        For the most part, however, polymorphism is not required because Canvas classifies 
+        quizzes as assignments, so the base class can be used for both assignments and quizzes.
+        There are different properties, but the base class can be used to store the common properties.
+    */
+    public override List<string> GetDetails()
+    {
+        List<string> strings = new();
+
+        strings.Add($"Name: ${_name}");
+        strings.Add($"Points: ${_points}");
+        strings.Add($"Attempts: {_allowedAttempts}");
+        strings.Add($"Due: {_dueDate}");
+        strings.Add($"Available From: {_availableFrom}");
+        strings.Add($"Available Until: {_availableUntil}");
+        strings.Add($"Question Count: {_questionCount}");
+        strings.Add($"Time Limit: {_timeLimit}");
+        strings.Add($"Proctored: {_isProctored}");
+        strings.Add($"Remotely Proctored: {_isRemotelyProctored}");
+
+        return strings;
+    }
+    public int GetQuestionCount()
+    {
+        return _questionCount;
+    }
+    public int GetTimeLimit()
+    {
+        return _timeLimit;
+    }
+    public bool IsProctored()
+    {
+        return _isProctored;
+    }
+    public bool IsRemotelyProctored()
+    {
+        return _isRemotelyProctored;
+    }
+    
 }

@@ -3,6 +3,12 @@ using Windows.UI.Notifications;
 using System;
 using System.Collections.Generic;
 using Windows.Media.Protection.PlayReady;
+/*
+    TODO: 
+    1. Add assignment update notifications in test menu
+    2. Add quiz update notifications in test menu
+*/
+
 
 /*
 
@@ -41,6 +47,10 @@ Instructions for installing and running this app:
     Written By: Matthew Hepworth
     For: Programming with Classes, CSE 210.
     Last Updated: 12/10/2024
+
+    Canvas Connect is a console application that allows students to connect to their Canvas account, view their course assignments and quizzes, 
+    and set custom notifications and refresh intervals for each course. The application fetches course and assignment data from the Canvas API
+    and displays it in a user-friendly calendar format. Students can also link their Canvas account to the application using an API key.
 */
 class Program
 {
@@ -85,7 +95,7 @@ class Program
                     if (response == null || response.StatusCode != System.Net.HttpStatusCode.OK)
                     {
                         // Console.WriteLine("Failed to connect to Canvas API. Please check your API key.");
-                        Toast notification = new Toast("Canvas Connect", 5000, "Failed to connect to Canvas API. Please check your API key in apikey.json", "CSE210", "Programming With Classes");
+                        Toast notification = new Toast("Canvas Connect", 5000, "Failed to connect to Canvas API. Please check your API key in apikey.json", "SYS", "SYSTEM MESSAGE", "SYSTEM");
                         notification.Send();
                     }
                     else
@@ -93,7 +103,7 @@ class Program
                         // Console.WriteLine("============================================");
                         // Console.WriteLine("     Successfully Connected to Canvas.      ");
                         // Console.WriteLine("============================================");
-                        Toast notification = new Toast("Canvas Connect", 5000, "Successfully connected to Canvas API.", "CSE210", "Programming With Classes");
+                        Toast notification = new Toast("Canvas Connect", 5000, "Successfully connected to Canvas API.", "SYS", "SYSTEM MESSAGE", "SYSTEM");
                         notification.Send();
                     }
                     await FetchAPIData(); // Fetch Courses and Assignment Data
@@ -168,9 +178,9 @@ class Program
                 case "quit":
                     stop = true;
                     break;
-                case "toast":
-                    Toast toast = new Toast("Test", 555555, "This is a test message", "CSE210", "Programming With Classes");
-                    toast.Send();
+                case "tests":
+                    // Run tests
+                    ShowTests();
                     break;
 
             }
@@ -404,5 +414,150 @@ class Program
             } while (res2 != "5");
 
         } while (res != "");
+    }
+    private static void ShowTests()
+    {
+        string res;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("============================================");
+            Console.WriteLine("                  Test Menu                 ");
+            Console.WriteLine("============================================");
+            Console.WriteLine("Please select an item to test:");
+            Console.WriteLine("    1. Announcement Test");
+            Console.WriteLine("    2. Message Test");
+            Console.WriteLine("    3. Assignment Change Notification Test");
+            Console.WriteLine("    4. Quiz Change Notification Test");
+            Console.WriteLine("    5. Assignment Created Notification Test");
+            Console.WriteLine("    6. Quiz Created Notification Test");
+            Console.WriteLine("    7. Assignment Due Notification Test");
+            Console.WriteLine("    8. Quiz Due Notification Test\n");
+            Console.WriteLine("press enter to go back to the main menu");
+
+            res = Console.ReadLine();
+
+            switch(res)
+            {
+                case "1":
+                    AnnouncementTest();
+                    break;
+                case "2":
+                    MessageTest();
+                    break;
+                case "3":
+                    AssignmentChangeNotificationTest();
+                    break;
+                case "4":
+                    QuizChangeNotificationTest();
+                    break;
+                case "5":
+                    AssignmentCreatedNotificationTest();
+                    break;
+                case "6":
+                    QuizCreatedNotificationTest();
+                    break;
+                case "7":
+                    AssignmentDueNotificationTest();
+                    break;
+                case "8":
+                    QuizDueNotificationTest();
+                    break;
+            }
+        } while (res != "");
+
+    }
+    private static void AnnouncementTest()
+    {
+        // Meant to simulate a fetched announcement from the Canvas API. Functionality is not implemented in the final project due to a lack of announcements to test with.
+        string title = "Finals Week";
+        string author = "Bro. John Doe";
+        string classCode = "Brain Rot 101";
+        DateTime lastEdited = DateTime.Now;
+        string message = "Finals week is coming up! Make sure you are prepared with your worst brain rot yet!";
+        Announcement announcement = new Announcement(title, author, classCode, lastEdited, message, "Brain Rot 101");
+        announcement.Send();
+    }
+    private static void MessageTest()
+    {
+        // Meant to simulate a fetched message from the Canvas API. Functionality is not implemented in the final project due to a lack of messages to test with.
+        string title = "Finals Week";
+        string body = "Matthew, finals week is coming up! Make sure you are prepared with your worst brain rot yet!";
+        DateTime date = DateTime.Now;
+        string author = "Bro. John Doe";
+        string canvasCourseCode = "Brain Rot 101";
+        Message message = new Message(title, body, date, author, canvasCourseCode);
+        message.Send();
+    }
+    private static void AssignmentChangeNotificationTest()
+    {
+        // Simulate an assignment change notification
+        string title = "Assignment Updated";
+        string message = "The assignment 'Project Proposal' has been updated.";
+        string canvasCourseCode = "CSE 210";
+        string courseName = "Programming with Classes";
+
+        Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
+        toast.Send();
+    }
+
+    private static void QuizChangeNotificationTest()
+    {
+        // Simulate a quiz change notification
+        string title = "Quiz Updated";
+        string message = "The quiz 'Midterm Exam' has been updated.";
+        string canvasCourseCode = "CSE 210";
+        string courseName = "Programming with Classes";
+
+        Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
+        toast.Send();
+    }
+
+    private static void AssignmentCreatedNotificationTest()
+    {
+        // Simulate an assignment created notification
+        string title = "New Assignment Created";
+        string message = "A new assignment 'Final Project' has been created.";
+        string canvasCourseCode = "CSE 210";
+        string courseName = "Programming with Classes";
+
+        Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
+        toast.Send();
+    }
+
+    private static void QuizCreatedNotificationTest()
+    {
+        // Simulate a quiz created notification
+        string title = "New Quiz Created";
+        string message = "A new quiz 'Final Exam' has been created.";
+        string canvasCourseCode = "CSE 210";
+        string courseName = "Programming with Classes";
+
+        Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
+        toast.Send();
+    }
+
+    private static void AssignmentDueNotificationTest()
+    {
+        // Simulate an assignment due notification
+        string title = "Assignment Due Soon";
+        string message = "The assignment 'Project Proposal' is due in 24 hours.";
+        string canvasCourseCode = "CSE 210";
+        string courseName = "Programming with Classes";
+
+        Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
+        toast.Send();
+    }
+
+    private static void QuizDueNotificationTest()
+    {
+        // Simulate a quiz due notification
+        string title = "Quiz Due Soon";
+        string message = "The quiz 'Midterm Exam' is due in 24 hours.";
+        string canvasCourseCode = "CSE 210";
+        string courseName = "Programming with Classes";
+
+        Toast toast = new Toast(title, 5000, message, canvasCourseCode, courseName);
+        toast.Send();
     }
 }

@@ -1,3 +1,5 @@
+using Windows.UI.ViewManagement;
+
 class Message
 {
     private string _title;
@@ -19,7 +21,7 @@ class Message
     public List<string> GetMessageInfo()
     {
         List<string> messageInfo = new();
-        
+
         messageInfo.Add($"Title: {_title}");
         messageInfo.Add($"Body: {_body}");
         messageInfo.Add($"Date: {_date}");
@@ -36,5 +38,11 @@ class Message
     public void MarkAsUnread()
     {
         _isRead = false;
+    }
+    public void Send()
+    {
+        // Create the toast content
+        Toast toast = new Toast(_title + " - Private Message", 15, _body, _canvasCourseCode, "N/A", _author);
+        toast.Send();
     }
 }

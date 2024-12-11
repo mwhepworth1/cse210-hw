@@ -6,8 +6,9 @@ class Announcement
     protected DateTime _lastEdited;
     protected string _message;
     protected bool _isRead;
+    protected string _className = "";
 
-    public Announcement(string title, string author, string classCode, DateTime lastEdited, string message, bool isRead = false)
+    public Announcement(string title, string author, string classCode, DateTime lastEdited, string message, string courseName = "", bool isRead = false)
     {
         _title = title;
         _author = author;
@@ -15,6 +16,7 @@ class Announcement
         _lastEdited = lastEdited;
         _message = message;
         _isRead = isRead;
+        _className = courseName;
     }
 
     public List<string> GetAnnouncement()
@@ -42,6 +44,29 @@ class Announcement
     public void MarkAsUnread()
     {
         _isRead = false;
+    }
+
+    public string GetTitle()
+    {
+        return _title;
+    }
+    public string GetAuthor()
+    {
+        return _author;
+    }
+    public string GetClassCode()
+    {
+        return _classCode;
+    }
+    public DateTime GetLastEdited()
+    {
+        return _lastEdited;
+    }
+    public void Send()
+    {
+        // Send the announcement as a toast
+        Toast toast = new Toast(_title + " - Announcement", 15, _message, _classCode, _className, _author);
+        toast.Send();
     }
     
 }

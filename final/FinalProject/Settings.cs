@@ -142,7 +142,7 @@ class Settings
             foreach (var assignment in changedAssignments)
             {
                 if (!_notificationsEnabled) continue;
-                Toast notification = new Toast("Assignment Updated", 5000, $"Assignment '{assignment.GetTitle()}' has been updated.", course.GetCanvasCode(), course.GetName());
+                Toast notification = new Toast("Assignment Updated", 5000, $"Assignment '{assignment.GetTitle()}' has been updated.", course.GetCanvasCode(), course.GetName(), course.GetInstructor());
                 notification.Send();
             }
     

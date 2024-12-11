@@ -9,14 +9,16 @@ public class Toast
     private string _message;
     private string _canvasCourseCode; 
     private string _courseName;
+    private string _author;
 
-    public Toast(string title, int duration, string message, string canvasCourseCode, string courseName)
+    public Toast(string title, int duration, string message, string canvasCourseCode, string courseName = "N/A", string author = "Instructor Name")
     {
         _title = title;
         _duration = duration;
         _message = message;
         _canvasCourseCode = canvasCourseCode;
         _courseName = courseName;
+        _author = author;
     }
 
     public void Send()
@@ -34,6 +36,20 @@ public class Toast
         toast.AddArgument("courseName", _courseName);
         toast.AddText(_title);
         toast.AddText(_message);
+        
+        if (_courseName == "N/A")
+        {
+            toast.AddText(_author);
+        }
+        else if (_author == "Instructor Name")
+        {
+            toast.AddText(_courseName);
+        }
+        else
+        {
+            toast.AddText($"{_author} - {_courseName}");
+        }
+        
         toast.AddCustomTimeStamp(DateTime.Now);
         toast.AddAppLogoOverride(new Uri(logoPath));
 
