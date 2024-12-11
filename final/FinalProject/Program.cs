@@ -257,7 +257,8 @@ class Program
                     Utilities.ShowSpinner($"Processing assignment data for {course.GetName()} ");
                     foreach (var assignment in assignmentsData)
                     {
-                        if (assignment.is_quiz_assignment == true || assignment.is_quiz_assignment == "true")
+                        bool isQuiz = assignment.is_quiz_assignment == "true";
+                        if (isQuiz)
                         {
                             DateTime unlockAt = assignment.unlock_at != null ? DateTime.Parse((string)assignment.unlock_at) : DateTime.Now;
                             DateTime lockAt = assignment.lock_at != null ? DateTime.Parse((string)assignment.lock_at) : new DateTime(2099, 12, 31);
@@ -269,7 +270,7 @@ class Program
                             int timeLimit = -1;
                             bool isProctored = false;
                             bool isRemotelyProctored = false;
-                            bool completed = assignment.has_submitted_submissions == "true" ? true : false;
+                            bool completed = assignment.submission.workflow_state == "unsubmitted" ? false : true;
 
                             Quiz newQuiz = new Quiz(name, points, dueDate, allowedAttempts, unlockAt, lockAt, questionCount, timeLimit, isProctored, isRemotelyProctored, completed);
                             course.AddQuiz(newQuiz);
@@ -282,7 +283,7 @@ class Program
                             string name = assignment.name;
                             int points = assignment.points_possible;
                             int allowedAttempts = assignment.allowed_attempts;
-                            bool completed = assignment.has_submitted_submissions == "true" ? true : false;
+                            bool completed = assignment.submission.workflow_state == "unsubmitted" ? false : true;
 
                             Assignment newAssignment = new Assignment(name, points, dueDate, allowedAttempts, unlockAt, lockAt, completed);
                             course.AddAssignment(newAssignment);
